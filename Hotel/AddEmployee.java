@@ -4,6 +4,7 @@ package HotelManagementSystem;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import java.sql.SQLException;
 
 public class AddEmployee extends JFrame{ //Third Frame
     // Labels for employee details
@@ -19,13 +20,17 @@ public class AddEmployee extends JFrame{ //Third Frame
     ButtonGroup BG;
 
     // Button for confirming employee details
-    JButton Confirm, btnBack;
+    JButton Confirm, btnBack, btnManageEmployee, btnManageManager;
 
     // ComboBox for job selection
     JComboBox CBJob;
 
+    // Role information
+    String role;
+
     // Constructor for AddEmployee class
-    public AddEmployee() {
+    public AddEmployee(String role) {
+        this.role = role;
 
         // Set frame properties
         getContentPane().setBackground(Color.WHITE);
@@ -148,7 +153,7 @@ public class AddEmployee extends JFrame{ //Third Frame
         Confirm.setBackground(new Color(202, 221, 239,255));
         Confirm.setForeground(Color.BLACK);
         add(Confirm);
-        
+
         // Back button
         btnBack = new JButton("BACK");
         btnBack.addActionListener(new ActionListener() {
@@ -161,6 +166,42 @@ public class AddEmployee extends JFrame{ //Third Frame
         btnBack.setBackground(new Color(201, 220, 238,255));
         btnBack.setForeground(Color.BLACK);
         add(btnBack);
+
+        // Button for managing employees
+        btnManageEmployee = new JButton("Manage Employees");
+        btnManageEmployee.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Open the Employee.java page
+                try {
+                    new Employee(role).setVisible(true);
+                    setVisible(false);
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+        btnManageEmployee.setBounds(345, 510, 150, 30);
+        btnManageEmployee.setBackground(new Color(201, 220, 238,255));
+        btnManageEmployee.setForeground(Color.BLACK);
+        add(btnManageEmployee);
+
+        // Button for managing managers
+        btnManageManager = new JButton("Manage Managers");
+        btnManageManager.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Open the Employee.java page
+                try {
+                    new ManagerInfo(role).setVisible(true);
+                    setVisible(false);
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+        btnManageManager.setBounds(520, 510, 150, 30);
+        btnManageManager.setBackground(new Color(201, 220, 238,255));
+        btnManageManager.setForeground(Color.BLACK);
+        add(btnManageManager);
 
         setVisible(true);
 
@@ -202,43 +243,43 @@ public class AddEmployee extends JFrame{ //Third Frame
                     conn c = new conn();
 
                     if (name.equals("")){
-                        JOptionPane.showMessageDialog(null, "Name cannot be empty");
+                        JOptionPane.showMessageDialog(null, "Name cannot be empty", "Error", JOptionPane.ERROR_MESSAGE);
                     }
                     else if (ic.equals("")) {
-                        JOptionPane.showMessageDialog(null, "IC cannot be empty");
+                        JOptionPane.showMessageDialog(null, "IC cannot be empty", "Error", JOptionPane.ERROR_MESSAGE);
                     }
                     else if (ic.length() != 12) {
-                        JOptionPane.showMessageDialog(null, "IC must be 12 digits");
+                        JOptionPane.showMessageDialog(null, "IC must be 12 digits", "Error", JOptionPane.ERROR_MESSAGE);
                     }
                     else if (age.equals("")) {
-                        JOptionPane.showMessageDialog(null, "Age cannot be empty");
+                        JOptionPane.showMessageDialog(null, "Age cannot be empty", "Error", JOptionPane.ERROR_MESSAGE);
                     }
                     else if (age.length()>2) {
-                        JOptionPane.showMessageDialog(null, "Invalid age");
+                        JOptionPane.showMessageDialog(null, "Invalid age", "Error", JOptionPane.ERROR_MESSAGE);
                     }
                     else if (phone.equals("")) {
-                        JOptionPane.showMessageDialog(null, "Phone number cannot be empty");
+                        JOptionPane.showMessageDialog(null, "Phone number cannot be empty", "Error", JOptionPane.ERROR_MESSAGE);
                     }
                     else if (phone.length()<9 || phone.length()>11) {
-                        JOptionPane.showMessageDialog(null, "Invalid phone number");
+                        JOptionPane.showMessageDialog(null, "Invalid phone number", "Error", JOptionPane.ERROR_MESSAGE);
                     }
                     else if (!RBMale.isSelected() && !RBFemale.isSelected()) {
-                        JOptionPane.showMessageDialog(null, "Please select a gender");
+                        JOptionPane.showMessageDialog(null, "Please select a gender", "Error", JOptionPane.ERROR_MESSAGE);
                     }
                     else if (email.equals("")){
-                        JOptionPane.showMessageDialog(null, "Email cannot be empty");
+                        JOptionPane.showMessageDialog(null, "Email cannot be empty", "Error", JOptionPane.ERROR_MESSAGE);
                     }
                     else if(!email.contains("@") || !email.contains(".com")){
-                        JOptionPane.showMessageDialog(null, "Invalid email");
+                        JOptionPane.showMessageDialog(null, "Invalid email", "Error", JOptionPane.ERROR_MESSAGE);
                     }
                     else if (address.equals("")){
-                        JOptionPane.showMessageDialog(null, "Address cannot be empty");
+                        JOptionPane.showMessageDialog(null, "Address cannot be empty", "Error", JOptionPane.ERROR_MESSAGE);
                     }
                     else if (job.equals("Choose a job")) {
-                        JOptionPane.showMessageDialog(null, "Please choose a job");
+                        JOptionPane.showMessageDialog(null, "Please choose a job", "Error", JOptionPane.ERROR_MESSAGE);
                     }
                     else if (salary.equals("")){
-                        JOptionPane.showMessageDialog(null, "Salary cannot be empty");
+                        JOptionPane.showMessageDialog(null, "Salary cannot be empty", "Error", JOptionPane.ERROR_MESSAGE);
                     }
                     else {
                         String data = "INSERT INTO employee values( '" + name + "', '" + ic + "', '" + age + "', '" + phone + "','" + gender + "', '" + email + "', '" + address + "','" + job + "', '" + salary + "')";
@@ -250,17 +291,17 @@ public class AddEmployee extends JFrame{ //Third Frame
 
                 } catch (Exception e) {
                     e.printStackTrace();
+                }
             }
-    }
         });
 
         setVisible(true);
         setSize(900,600);
         setLocation(200,50);
 
-}
+    }
 
-public static void main(String[] args){
-        new AddEmployee();
-}
+    public static void main(String[] args){
+        new AddEmployee("admin");
+    }
 }
