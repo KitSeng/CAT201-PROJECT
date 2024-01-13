@@ -27,12 +27,14 @@ public class ManagerInfo extends JFrame {
 	// Labels for column headers
 	JLabel LblName, LblIC, LblAge, LblPhone, LblGender, LblEmail, LblAddress, LblJob, LblSalary;
 
+	String role;
+
 	// Main method to launch the application
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ManagerInfo frame = new ManagerInfo();
+					ManagerInfo frame = new ManagerInfo("receptionist");
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -47,7 +49,8 @@ public class ManagerInfo extends JFrame {
 	}
 
 	// Constructor for the ManagerInfo class
-	public ManagerInfo() throws SQLException {
+	public ManagerInfo(String role) throws SQLException {
+		this.role = role;
 		// Set frame properties
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(430, 200, 900, 600);
@@ -225,6 +228,22 @@ public class ManagerInfo extends JFrame {
 		btnDelete.setEnabled(false); // Initially disabled until a row is selected
 		contentPane.add(btnDelete);
 
+		// Check the user role and adjust button visibility
+		if (this.role.equals("receptionist")) {
+			// If the user is a receptionist, hide the buttons
+			btnSave.setVisible(false);
+			btnDelete.setVisible(false);
+			btnShowInfo.setVisible(false);
+			btnBack.setBounds(700, 510, 150, 30);
+		}
+		else if (this.role.equals("admin")) {
+			// If the user is an admin, show the buttons
+			btnSave.setVisible(true);
+			btnDelete.setVisible(true);
+			btnShowInfo.setVisible(true);
+			btnBack.setBounds(560, 510, 150, 30);
+		}
+
 		// Set frame visibility, location, and size
 		setVisible(true);
 		setLocation(200, 50);
@@ -307,7 +326,7 @@ public class ManagerInfo extends JFrame {
 				"1. Double-click the cell<br>" +
 				"2. Make the changes<br>" +
 				"3. Click ENTER<br>" +
-				"4. Click 'Save the changes'</html>";
+				"4. Click 'Save Changes'</html>";
 
 		JOptionPane.showMessageDialog(this, message, "Editing Steps", JOptionPane.INFORMATION_MESSAGE);
 	}
@@ -317,30 +336,33 @@ public class ManagerInfo extends JFrame {
 		try {
 			int selectedRow = table.getSelectedRow();
 			if (selectedRow != -1) {
-				String Name = (String) table.getValueAt(selectedRow, 0);
+				int dialogResult = JOptionPane.showConfirmDialog(this, "Are you sure to delete this employee information?", "Confirmation", JOptionPane.YES_NO_OPTION);
+				if (dialogResult == JOptionPane.YES_OPTION) {
+					String Name = (String) table.getValueAt(selectedRow, 0);
 
-				// Delete the selected row from the database
-				String deleteQuery = "DELETE FROM employee WHERE name = '" + Name + "'";
-				conn c = new conn();
-				c.s.executeUpdate(deleteQuery);
+					// Delete the selected row from the database
+					String deleteQuery = "DELETE FROM employee WHERE name = '" + Name + "'";
+					conn c = new conn();
+					c.s.executeUpdate(deleteQuery);
 
-				// Remove the existing table
-				contentPane.remove(table);
+					// Remove the existing table
+					contentPane.remove(table);
 
-				// Create a new table and set its properties
-				table = new JTable();
-				table.setBackground(new Color(0, 0, 0, 0));
-				table.setBounds(0, 175, 885, 400);
-				table.setRowHeight(30);
-				contentPane.add(table);
+					// Create a new table and set its properties
+					table = new JTable();
+					table.setBackground(new Color(0, 0, 0, 0));
+					table.setBounds(0, 175, 885, 400);
+					table.setRowHeight(30);
+					contentPane.add(table);
 
-				// Reload the data after deletion
-				loadManagerData();
+					// Reload the data after deletion
+					loadManagerData();
 
-				// Repaint the content pane
-				contentPane.repaint();
+					// Repaint the content pane
+					contentPane.repaint();
 
-				JOptionPane.showMessageDialog(this, "Row deleted successfully!");
+					JOptionPane.showMessageDialog(this, "Deleted successfully!");
+				}
 			} else {
 				JOptionPane.showMessageDialog(this, "Please select a row to delete.", "Warning", JOptionPane.WARNING_MESSAGE);
 			}
