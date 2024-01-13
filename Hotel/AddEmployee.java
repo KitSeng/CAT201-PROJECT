@@ -19,7 +19,7 @@ public class AddEmployee extends JFrame{ //Third Frame
     ButtonGroup BG;
 
     // Button for confirming employee details
-    JButton Confirm;
+    JButton Confirm, btnBack;
 
     // ComboBox for job selection
     JComboBox CBJob;
@@ -148,6 +148,19 @@ public class AddEmployee extends JFrame{ //Third Frame
         Confirm.setBackground(new Color(202, 221, 239,255));
         Confirm.setForeground(Color.BLACK);
         add(Confirm);
+        
+        // Back button
+        btnBack = new JButton("BACK");
+        btnBack.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                new Reception().setVisible(true);
+                setVisible(false);
+            }
+        });
+        btnBack.setBounds(695, 510, 150, 30); // Adjusted bounds
+        btnBack.setBackground(new Color(201, 220, 238,255));
+        btnBack.setForeground(Color.BLACK);
+        add(btnBack);
 
         setVisible(true);
 
