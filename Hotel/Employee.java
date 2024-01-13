@@ -72,6 +72,7 @@ public class Employee extends JFrame {
 		// Set the background color of the table to a transparent color
 		table.setBackground(new Color(0, 0, 0, 0));
 		table.setBounds(0, 175, 885, 400); // Adjusted bounds
+		table.setRowHeight(30);
 		contentPane.add(table);
 
 		// Load employee data into the table
@@ -277,6 +278,7 @@ public class Employee extends JFrame {
 			table = new JTable();
 			table.setBackground(new Color(0, 0, 0, 0));
 			table.setBounds(0, 175, 885, 400);
+			table.setRowHeight(30);
 			contentPane.add(table);
 
 			// Reload the data after saving changes
@@ -329,6 +331,7 @@ public class Employee extends JFrame {
 				table = new JTable();
 				table.setBackground(new Color(0, 0, 0, 0));
 				table.setBounds(0, 175, 885, 400);
+				table.setRowHeight(30);
 				contentPane.add(table);
 
 				// Reload the data after deletion
@@ -359,6 +362,7 @@ public class Employee extends JFrame {
 			table = new JTable();
 			table.setBackground(new Color(0, 0, 0, 0));
 			table.setBounds(0, 175, 885, 400);
+			table.setRowHeight(30);
 			contentPane.add(table);
 
 			String searchQuery = "SELECT * FROM employee WHERE job !='Manager' AND (name LIKE '%" + searchValue + "%' OR ic LIKE '%" + searchValue + "%' OR age LIKE '%" + searchValue + "%' OR phone LIKE '%" + searchValue + "%' OR gender LIKE '%" + searchValue + "%' OR job LIKE '%" + searchValue + "%' OR salary LIKE '%" + searchValue + "%')";
@@ -394,6 +398,7 @@ public class Employee extends JFrame {
 			table = new JTable();
 			table.setBackground(new Color(0, 0, 0, 0));
 			table.setBounds(0, 175, 885, 400);
+			table.setRowHeight(30);
 			contentPane.add(table);
 
 			// Load all employee data into the new table
